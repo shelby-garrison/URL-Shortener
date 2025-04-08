@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  app1:
+    build:
+      context: .
+    container_name: app1
+    environment:
+     - INSTANCE_NAME=app1
+     - MONGO_URI=${MONGO_URI}
+     - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+     - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+     - CALLBACK_URL=${CALLBACK_URL}
+     - PORT=${PORT}
+     - JWT_SECRET=${JWT_SECRET}
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  app2:
+    build:
+      context: .
+    container_name: app2
+    environment:
+      - INSTANCE_NAME=app2
+      - MONGO_URI=${MONGO_URI}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - CALLBACK_URL=${CALLBACK_URL}
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app1
+      - app2
+    restart: unless-stopped

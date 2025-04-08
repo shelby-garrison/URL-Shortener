@@ -1,7 +1,7 @@
 const Analytics = require("../models/Analytics");
 const Url = require("../models/URL");
-const redisclient = require("../config/redis");
-const { checkCache, setCache } = require("../services/RedisCache.js");
+// const redisclient = require("../config/redis");
+// const { checkCache, setCache } = require("../services/RedisCache.js");
 
 
 //  URL Analytics
@@ -11,12 +11,12 @@ const { checkCache, setCache } = require("../services/RedisCache.js");
     const { alias } = req.params;
 
     // Check Redis cache
-    const cachedData = await checkCache(`urlAnalytics:${alias}`, redisclient);
-    console.log("cachedData", cachedData);
-    if (cachedData) {
-      console.log("Serving from cache");
-      return res.status(200).json(cachedData);
-    }
+    // const cachedData = await checkCache(`urlAnalytics:${alias}`, redisclient);
+    // console.log("cachedData", cachedData);
+    // if (cachedData) {
+    //   console.log("Serving from cache");
+    //   return res.status(200).json(cachedData);
+    // }
 
     const url = await Url.findOne({ alias });
     if (!url) {
@@ -58,7 +58,7 @@ const { checkCache, setCache } = require("../services/RedisCache.js");
       deviceType,
     };
 
-    await setCache(`urlAnalytics:${alias}`, analyticsData, redisclient);
+    // await setCache(`urlAnalytics:${alias}`, analyticsData, redisclient);
     console.log("Serving from database");
     return res.status(200).json(analyticsData);
   } catch (error) {
@@ -71,11 +71,11 @@ const { checkCache, setCache } = require("../services/RedisCache.js");
  const getTopicAnalytics = async (req, res) => {
   try {
     const { topic } = req.params;
-    const cachedData = await checkCache(`topicAnalytics:${topic}`, redisclient);
-    if (cachedData) {
-      console.log("Serving from cache");
-      return res.status(200).json(cachedData);
-    }
+    // const cachedData = await checkCache(`topicAnalytics:${topic}`, redisclient);
+    // if (cachedData) {
+    //   console.log("Serving from cache");
+    //   return res.status(200).json(cachedData);
+    // }
 
     const urls = await Url.find({ topic });
     if (!urls.length) {
@@ -104,7 +104,7 @@ const { checkCache, setCache } = require("../services/RedisCache.js");
       })),
     };
 
-    await setCache(`topicAnalytics:${topic}`, topicAnalytics, redisclient);
+    // await setCache(`topicAnalytics:${topic}`, topicAnalytics, redisclient);
     return res.status(200).json(topicAnalytics);
   } catch (error) {
     console.error("Error fetching topic analytics:", error);
@@ -116,11 +116,11 @@ const { checkCache, setCache } = require("../services/RedisCache.js");
  const getOverallAnalytics = async (req, res) => {
   try {
     const userId = req.user.id;
-    const cachedData = await checkCache(`overallAnalytics:${userId}`, redisclient);
-    if (cachedData) {
-      console.log("Serving from cache");
-      return res.status(200).json(cachedData);
-    }
+    // const cachedData = await checkCache(`overallAnalytics:${userId}`, redisclient);
+    // if (cachedData) {
+    //   console.log("Serving from cache");
+    //   return res.status(200).json(cachedData);
+    // }
 
     const urls = await Url.find({ user: userId });
     if (!urls.length) {
@@ -151,7 +151,7 @@ const { checkCache, setCache } = require("../services/RedisCache.js");
       deviceType,
     };
 
-    await setCache(`overallAnalytics:${userId}`, overallAnalytics, redisclient);
+    // await setCache(`overallAnalytics:${userId}`, overallAnalytics, redisclient);
     console.log("Serving from database");
     return res.status(200).json(overallAnalytics);
   } catch (error) {
