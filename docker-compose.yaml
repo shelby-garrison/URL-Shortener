@@ -2,7 +2,7 @@ services:
   app1:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     container_name: app1
     environment:
      - INSTANCE_NAME=app1
@@ -19,7 +19,7 @@ services:
   app2:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     container_name: app2
     environment:
       - INSTANCE_NAME=app2
