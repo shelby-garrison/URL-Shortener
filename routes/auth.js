@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Google authentication route
 router.get('/google', (req, res, next) => {
-  console.log(`🌐 Google OAuth route hit by ${process.env.INSTANCE_NAME || process.env.HOSTNAME || "unknown app"}`);
+  // console.log(`🌐 Google OAuth route hit by ${process.env.INSTANCE_NAME || process.env.HOSTNAME || "unknown app"}`);
   next(); // continue to Passport's authenticate middleware
 }, passport.authenticate('google', { scope: ['profile', 'email'] }));
 
